@@ -1,3 +1,27 @@
+- name: partition data drive
+  parted:
+    device: /dev/sdb
+    number: 1
+    part_start: 0%
+    part_end: 0%
+    align: optimal
+    part_type: primary
+    label: gpt
+    name: data
+    state: present
+
+- name: create filesystem
+  filesystem:
+    dev: /dev/sdb1
+    fstype: ext4
+
+- name: mount data to /var/lib/libvirt/images
+  mount:
+    path: /var/lib/libvirt/images
+    src: /dev/sdb1
+    fstype: ext4
+    state: mounted
+
 - name: install virtualization packages
   package:
     name: "{{ item }}"
