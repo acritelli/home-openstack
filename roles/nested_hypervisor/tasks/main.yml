@@ -1,0 +1,13 @@
+- name: install virtualization packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - qemu-kvm
+    - libvirt-bin
+
+- name: enable libvirt service
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes
