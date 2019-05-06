@@ -1,0 +1,11 @@
+# Loads and unloads the kvm_intel module
+# to refresh the nested=1 param
+- name: modprobe nested virt
+  block:
+    - modprobe:
+        name: kvm_intel
+        state: absent
+    - modprobe:
+        name: kvm_intel
+        state: present
+        params: nested=1

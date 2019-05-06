@@ -1,0 +1,4 @@
+# Loads and unloads the kvm_intel module
+# to refresh the nested=1 param
+- name: modprobe kvm
+  include: tasks/modprobe_kvm.yml
