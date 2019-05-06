@@ -43,3 +43,19 @@
     create: true
     state: present
   notify: modprobe kvm
+
+- name: add ISO directory
+  file:
+    path: /var/lib/libvirt/images/isos
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: add Ubuntu 18.04 ISO
+  copy:
+    dest: /var/lib/libvirt/images/isos/ubuntu-18.04.2-server-amd64.iso
+    src: ubuntu-18.04.2-server-amd64.iso
+    owner: root
+    group: root
+    mode: 0644
