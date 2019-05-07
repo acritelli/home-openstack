@@ -1,0 +1,20 @@
+- name: set hostname
+  hostname:
+    name: "{{ inventory_hostname_short }}"
+
+- name: add /etc/hosts file
+  template:
+    dest: /etc/hosts
+    src: etc/hosts.j2
+    owner: root
+    group: root
+    mode: 0644
+
+- name: add systemd-timesyncd config
+  copy:
+    dest: /etc/systemd/timesyncd.conf
+    src: etc/systemd/timesyncd.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload systemd-timesyncd
