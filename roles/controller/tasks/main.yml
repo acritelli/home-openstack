@@ -1,0 +1,19 @@
+- name: install chronyd ntp server
+  package:
+    name: chrony
+    state: latest
+
+- name: start and enable chronyd ntp server
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
+
+# See: https://docs.openstack.org/install-guide/environment-ntp-controller.html
+- name: add chronyd ntp server configuration
+  lineinfile:
+    path: /etc/chrony/chrony.conf
+    regexp: '^server .* iburst$'
+    line: 'server 192.168.20.254 iburst'
+    state: present
+  notify: reload chronyd
