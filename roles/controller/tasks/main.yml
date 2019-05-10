@@ -17,3 +17,11 @@
     line: 'server 192.168.20.254 iburst'
     state: present
   notify: reload chronyd
+
+- name: permit connections to chronyd service
+  lineinfile:
+    path: /etc/chrony/chrony.conf
+    regexp: '^allow .*'
+    line: 'allow 192.168.20.0/24'
+    state: present
+  notify: reload chronyd
