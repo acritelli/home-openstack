@@ -1,4 +1,4 @@
-- name: reload memcached
+- name: restart memcached
   service:
     name: memcached
     state: restarted

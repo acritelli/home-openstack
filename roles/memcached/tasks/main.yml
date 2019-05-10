@@ -18,4 +18,4 @@
     regexp: '-l.*'
     line: "-l {{ ansible_host }}"
     state: present
-  notify: reload memcached
+  notify: restart memcached
