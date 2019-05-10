@@ -47,3 +47,21 @@
     login_unix_socket: /var/run/mysqld/mysqld.sock
     host: localhost
     state: absent
+
+# Create keystone user and database
+- name: create keystone user
+  mysql_user:
+    name: keystone
+    host: '%'
+    password: "{{ keystone_db_pw }}"
+    priv: 'keystone.*:ALL'
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+
+- name: create keystone databases
+  mysql_db:
+    name: keystone
+    state: present
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
