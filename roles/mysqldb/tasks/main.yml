@@ -3,6 +3,12 @@
     name: mariadb-server
     state: latest
 
+- name: start and enable mariadb
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
 - name: install python mysql modules
   package:
     name: python-pymysql
