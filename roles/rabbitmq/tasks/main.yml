@@ -9,7 +9,6 @@
     state: started
     enabled: yes
 
-
 - name: add rabbitmq user
   rabbitmq_user:
     user: openstack
