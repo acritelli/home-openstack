@@ -11,3 +11,4 @@
     - controller
     - mysqldb
     - rabbitmq
+    - memcached

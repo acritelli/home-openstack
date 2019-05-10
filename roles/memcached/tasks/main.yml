@@ -1,0 +1,21 @@
+- name: install memcached packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - memcached
+    - python-memcache
+
+- name: start and enable memcached
+  service:
+    name: memcached
+    state: started
+    enabled: yes
+
+- name: set memcached to listen on IP
+  lineinfile:
+    path: /etc/memcached.conf
+    regexp: '-l.*'
+    line: "-l {{ ansible_host }}"
+    state: present
+  notify: reload memcached
