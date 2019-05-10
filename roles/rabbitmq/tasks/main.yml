@@ -1,0 +1,14 @@
+- name: install rabbitmq server
+  package:
+    name: rabbitmq-server
+    state: latest
+
+- name: add rabbitmq user
+  rabbitmq_user:
+    user: openstack
+    password: "{{ rabbitmq_openstack_pw }}"
+    vhost: /
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present

@@ -10,3 +10,4 @@
   roles:
     - controller
     - mysqldb
+    - rabbitmq
