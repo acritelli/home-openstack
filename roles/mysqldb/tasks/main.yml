@@ -1,0 +1,43 @@
+- name: install mariadb server
+  package:
+    name: mariadb-server
+    state: latest
+
+- name: install python mysql modules
+  package:
+    name: python-pymysql
+    state: latest
+
+# For idempotence, we first set a root password.
+# Ignore errors, becausethe password may have already been set
+# Then, we drop in a /root/.my.cnf
+# See the official docs for more info:
+# https://docs.ansible.com/ansible/latest/modules/mysql_user_module.html#mysql-user-module
+
+# In an effort to make databases as complicated as reasonably possible,
+# the current version of mariadb only permits auth via a unix socket
+- name: set initial root password
+  mysql_user: 
+    name: root
+    password: "{{ mariadb_root_pw }}"
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  ignore_errors: true
+  register: result
+
+- name: add root my.cnf
+  template:
+    dest: /root/.my.cnf
+    src: root/my.cnf
+    owner: root
+    group: root
+    mode: 0600
+  when: result is succeeded
+
+- name: drop anonymous user
+  mysql_user:
+    name: ''
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    host: localhost
+    state: absent

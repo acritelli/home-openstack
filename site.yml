@@ -9,3 +9,4 @@
 - hosts: controllers
   roles:
     - controller
+    - mysqldb

@@ -18,3 +18,19 @@
     group: root
     mode: 0644
   notify: reload systemd-timesyncd
+
+# aptitude is needed to use generic package module
+- name: install aptitude package
+  package:
+    name: 'aptitude'
+    state: latest
+
+- name: update all packages
+  package:
+    name: '*'
+    state: latest
+
+- name: install python-openstackclient
+  package:
+    name: python-openstackclient
+    state: latest
