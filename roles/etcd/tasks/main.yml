@@ -1,0 +1,27 @@
+- name: install etcd
+  package:
+    name: etcd
+    state: latest
+
+- name: start and enable etcd
+  service:
+    name: etcd
+    state: started
+    enabled: yes
+
+- name: set memcached to listen on IP
+  lineinfile:
+    path: /etc/memcached.conf
+    regexp: '-l.*'
+    line: "-l {{ ansible_host }}"
+    state: present
+  notify: reload memcached
+
+- name: add etcd config
+  template:
+    dest: /etc/default/etcd
+    src: etc/default/etcd
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart etcd

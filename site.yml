@@ -12,3 +12,4 @@
     - mysqldb
     - rabbitmq
     - memcached
+    - etcd
