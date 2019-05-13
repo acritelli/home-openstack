@@ -40,6 +40,22 @@
     mode: 0600
   when: result is succeeded
 
+- name: add OpenStack DB config file
+  template:
+    dest: /etc/mysql/mariadb.conf.d/99-openstack.cnf
+    src: etc/mysql/mariadb.conf.d/99-openstack.cnf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart mysqld
+  register: os_config_file
+
+- name: immediately restart mariadb after config change
+  service:
+    name: mysqld
+    state: restarted
+  when: os_config_file.changed
+
 - name: drop anonymous user
   mysql_user:
     name: ''

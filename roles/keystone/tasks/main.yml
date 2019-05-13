@@ -1,0 +1,32 @@
+- name: install keystone packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - keystone
+    - apache2
+    - libapache2-mod-wsgi
+
+- name: add keystone config file
+  template:
+    dest: /etc/keystone/keystone.conf
+    src: etc/keystone/keystone.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: sync keystone DB
+  command: su -s /bin/sh -c "keystone-manage db_sync" keystone
+
+- name: perform fernet setup
+  command: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+
+- name: perform credential setup
+  command: keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+- name: bootstrap the identity service
+  command: "keystone-manage bootstrap --bootstrap-password {{ keystone_admin_pw }} \
+            --bootstrap-admin-url http://controller:35357/v3/ \
+            --bootstrap-internal-url http://controller:5000/v3/ \
+            --bootstrap-public-url http://controller:5000/v3/ \
+            --bootstrap-region-id RegionOne"

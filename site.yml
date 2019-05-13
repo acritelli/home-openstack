@@ -13,3 +13,4 @@
     - rabbitmq
     - memcached
     - etcd
+    - keystone
