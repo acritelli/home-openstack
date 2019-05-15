@@ -26,7 +26,15 @@
 
 - name: bootstrap the identity service
   command: "keystone-manage bootstrap --bootstrap-password {{ keystone_admin_pw }} \
-            --bootstrap-admin-url http://controller:35357/v3/ \
-            --bootstrap-internal-url http://controller:5000/v3/ \
-            --bootstrap-public-url http://controller:5000/v3/ \
+            --bootstrap-admin-url http://{{ inventory_hostname }}:35357/v3/ \
+            --bootstrap-internal-url http://{{ inventory_hostname }}:5000/v3/ \
+            --bootstrap-public-url http://{{ inventory_hostname }}:5000/v3/ \
             --bootstrap-region-id RegionOne"
+
+- name: set Apache ServerName
+  lineinfile:
+    path: /etc/apache2/apache2.conf
+    regexp: '^ServerName.*'
+    line: "ServerName {{ ansible_host }}"
+    state: present
+  notify: reload apache2

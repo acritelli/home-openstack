@@ -25,6 +25,17 @@
     name: 'aptitude'
     state: latest
 
+- name: Add apt key for cloud archives
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 391A9AA2147192839E9DB0315EDB1B62EC4926EA
+
+- name: add Stein cloud-archive repository
+  apt_repository:
+    repo: deb http://ubuntu-cloud.archive.canonical.com/ubuntu bionic-updates/stein main
+    state: present
+    update_cache: yes
+
 - name: update all packages
   package:
     name: '*'
