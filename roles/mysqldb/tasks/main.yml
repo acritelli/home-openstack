@@ -81,3 +81,21 @@
     state: present
     login_user: root
     login_unix_socket: /var/run/mysqld/mysqld.sock
+
+# Create glance user and database
+- name: create glance user
+  mysql_user:
+    name: glance
+    host: '%'
+    password: "{{ glance_db_pw }}"
+    priv: 'glance.*:ALL'
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+
+- name: create glance databases
+  mysql_db:
+    name: glance
+    state: present
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
