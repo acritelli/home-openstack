@@ -5,7 +5,7 @@
   with_items:
     - keystone
     - apache2
-    - libapache2-mod-wsgi
+    - libapache2-mod-wsgi-py3
 
 - name: add keystone config file
   template:
@@ -38,3 +38,15 @@
     line: "ServerName {{ ansible_host }}"
     state: present
   notify: reload apache2
+
+# Add keystone config for glance
+- name: get authentication token
+  tags: dev
+  os_auth:
+    auth:
+      auth_url: "http://{{ inventory_hostname }}:5000/v3"
+      username: admin
+      password: "{{ keystone_admin_pw }}"
+      project_name: admin
+      os_user_domain_name: Default
+      os_project_domain_name: Default
