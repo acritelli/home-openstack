@@ -39,14 +39,66 @@
     state: present
   notify: reload apache2
 
-# Add keystone config for glance
-- name: get authentication token
+# Sets a fact with info about the cloud to use
+# See: https://github.com/ansible/ansible/issues/19621
+- name: set OS auth info
   tags: dev
-  os_auth:
-    auth:
-      auth_url: "http://{{ inventory_hostname }}:5000/v3"
-      username: admin
-      password: "{{ keystone_admin_pw }}"
-      project_name: admin
-      os_user_domain_name: Default
-      os_project_domain_name: Default
+  set_fact:
+    os_cloud_info:
+      auth:
+        auth_url: "http://{{ inventory_hostname }}:5000/v3"
+        username: admin
+        password: "{{ keystone_admin_pw }}"
+        project_name: admin
+        os_user_domain_name: default
+        os_project_domain_name: default
+      auth_type: password
+      region_name: RegionOne
+      auth_version: 3
+      compute_api_version: 3
+
+- name: add keystone service project
+  tags: dev
+  os_project:
+    cloud: "{{ os_cloud_info }}"
+    name: service
+    description: "Project for OS Services"
+    domain: default
+
+# Add keystone config for glance
+- name: create glance keystone user
+  tags: dev
+  os_user:
+    cloud: "{{ os_cloud_info }}"
+    name: glance
+    domain: default
+    password: "{{ glance_keystone_pw }}"
+
+- name: add admin role to glance user and service project
+  tags: dev
+  os_user_role:
+    cloud: "{{ os_cloud_info }}"
+    user: glance
+    project: service
+    role: admin
+
+- name: add glance service
+  tags: dev
+  os_keystone_service:
+    cloud: "{{ os_cloud_info }}"
+    name: glance
+    description: "Openstack Image Service"
+    service_type: image
+
+- name: add glance service endpoints
+  tags: dev
+  os_keystone_endpoint:
+    cloud: "{{ os_cloud_info }}"
+    service: glance
+    endpoint_interface: "{{ item }}"
+    url: "http://{{ inventory_hostname }}:9292"
+    region: RegionOne
+  with_items:
+    - public
+    - internal
+    - admin
