@@ -1,0 +1,22 @@
+- name: install glance package
+  package:
+    name: glance
+    state: present
+
+- name: start and enable glance-api
+  service:
+    name: glance-api
+    state: started
+    enabled: yes
+
+- name: add glance configuration files
+  template:
+    dest: /etc/glance/glance-api.conf
+    src: etc/glance/glance-api.conf.j2
+    owner: root
+    group: glance
+    mode: 0644
+  notify: restart glance-api
+
+- name: populate the glance database
+  command: su -s /bin/sh -c "glance-manage db_sync" glance
