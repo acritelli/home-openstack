@@ -11,8 +11,8 @@
   template:
     dest: /etc/keystone/keystone.conf
     src: etc/keystone/keystone.conf
-    owner: root
-    group: root
+    owner: keystone
+    group: keystone
     mode: 0644
 
 - name: sync keystone DB
@@ -26,10 +26,10 @@
 
 - name: bootstrap the identity service
   command: "keystone-manage bootstrap --bootstrap-password {{ keystone_admin_pw }} \
-            --bootstrap-admin-url http://{{ inventory_hostname }}:35357/v3/ \
-            --bootstrap-internal-url http://{{ inventory_hostname }}:5000/v3/ \
-            --bootstrap-public-url http://{{ inventory_hostname }}:5000/v3/ \
-            --bootstrap-region-id RegionOne"
+    --bootstrap-admin-url http://{{ inventory_hostname }}:5000/v3/ \
+    --bootstrap-internal-url http://{{ inventory_hostname }}:5000/v3/ \
+    --bootstrap-public-url http://{{ inventory_hostname }}:5000/v3/ \
+    --bootstrap-region-id RegionOne"
 
 - name: set Apache ServerName
   lineinfile:
