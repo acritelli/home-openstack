@@ -93,9 +93,31 @@
     login_unix_socket: /var/run/mysqld/mysqld.sock
     state: present
 
-- name: create glance databases
+- name: create glance database
   mysql_db:
     name: glance
     state: present
     login_user: root
     login_unix_socket: /var/run/mysqld/mysqld.sock
+
+# Create nova user and database
+- name: create nova user
+  mysql_user:
+    name: nova
+    host: '%'
+    password: "{{ nova_db_pw }}"
+    priv: 'nova_api.*:ALL/nova.*:ALL/nova_cell0.*:ALL'
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+
+- name: create nova databases
+  mysql_db:
+    name: "{{ item }}"
+    state: present
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  with_items:
+    - nova_api
+    - nova
+    - nova_cell0

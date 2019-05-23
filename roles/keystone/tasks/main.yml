@@ -96,3 +96,37 @@
     - public
     - internal
     - admin
+
+# Add keystone config for nova
+- name: create nova keystone user
+  os_user:
+    cloud: "{{ os_cloud_info }}"
+    name: nova
+    domain: default
+    password: "{{ nova_keystone_pw }}"
+
+- name: add admin role to nova user and service project
+  os_user_role:
+    cloud: "{{ os_cloud_info }}"
+    user: nova
+    project: service
+    role: admin
+
+- name: add nova service
+  os_keystone_service:
+    cloud: "{{ os_cloud_info }}"
+    name: nova
+    description: "Openstack Compute Service"
+    service_type: compute
+
+- name: add nova service endpoints
+  os_keystone_endpoint:
+    cloud: "{{ os_cloud_info }}"
+    service: nova
+    endpoint_interface: "{{ item }}"
+    url: "http://{{ inventory_hostname }}:8774/v2.1"
+    region: RegionOne
+  with_items:
+    - public
+    - internal
+    - admin
