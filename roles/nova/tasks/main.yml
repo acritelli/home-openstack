@@ -1,0 +1,45 @@
+- name: install nova packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nova-api
+    - nova-conductor
+    - nova-novncproxy
+    - nova-scheduler
+
+- name: start and enable nova services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - nova-api
+    - nova-scheduler
+    - nova-conductor
+    - nova-novncproxy
+
+- name: add nova configuration file
+  template:
+    dest: /etc/nova/nova.conf
+    src: etc/nova/nova.conf.j2
+    owner: root
+    group: nova
+    mode: 0640
+  notify:
+    - restart nova-api
+    - restart nova-scheduler
+    - restart nova-conductor
+    - restart nova-novncproxy
+
+- name: populate the nova-api database
+  command: su -s /bin/sh -c "nova-manage api_db sync" nova
+
+- name: register the cell0 database
+  command: su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova
+
+- name: create the cell1 cell
+  command: su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
+
+- name: populate the nova database
+  command: su -s /bin/sh -c "nova-manage db sync" nova
