@@ -4910,7 +4910,7 @@ disk_formats = ami,ari,aki,vhd,vhdx,vmdk,raw,qcow2,vdi,iso,ploop.root-tar
 [keystone_authtoken]
 www_authenticate_uri = http://{{ inventory_hostname }}:5000
 auth_url = http://{{ inventory_hostname }}:5000
-memcached_servers = {{ inventory_hostname }}:5000
+memcached_servers = {{ inventory_hostname }}:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
