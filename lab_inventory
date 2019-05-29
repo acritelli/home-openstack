@@ -3,3 +3,6 @@ nested.os.acritelli.com ansible_host=192.168.20.2
 
 [controllers]
 controller01.os.acritelli.com ansible_host=192.168.20.11 mariadb_root_pw=s00perSecure! rabbitmq_openstack_pw=Th3RabbitsGeorge keystone_db_pw="AliciaK3ystone" keystone_admin_pw="l0WkeyLoki" glance_db_pw="gl@ncingInYourDirection" glance_keystone_pw="yUglancin@m3" nova_db_pw="s00perNova" nova_keystone_pw="novaR1iety"
+
+[compute_nodes]
+comp01.os.acritelli.com ansible_host=192.168.20.21

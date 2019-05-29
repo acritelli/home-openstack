@@ -16,3 +16,7 @@
     - keystone
     - glance
     - nova
+
+- hosts: compute_nodes
+  roles:
+    - compute

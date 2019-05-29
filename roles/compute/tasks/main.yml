@@ -1,0 +1,23 @@
+- name: install nova-compute package
+  package:
+    name: nova-compute
+    state: present
+
+- name: add nova configuration files
+  template:
+    dest: /etc/nova/nova.conf
+    src: etc/nova/nova.conf.j2
+    owner: root
+    group: nova
+    mode: 0640
+  notify: restart nova-compute service
+
+- name: start and enable nova-compute service
+  service:
+    name: nova-compute
+    state: started
+    enabled: true
+
+- name: discover compute hosts
+  command: su -s /bin/sh -c "nova-manage cell_v2 discover_hosts --verbose" nova
+  delegate_to: "{{ nova_host }}"
