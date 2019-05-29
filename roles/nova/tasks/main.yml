@@ -38,8 +38,10 @@
 - name: register the cell0 database
   command: su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova
 
+# Ignore errors because this is not idempotent
 - name: create the cell1 cell
   command: su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
+  ignore_errors: yes
 
 - name: populate the nova database
   command: su -s /bin/sh -c "nova-manage db sync" nova
