@@ -1,0 +1,20 @@
+- name: install neutron packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - neutron-server
+    - neutron-plugin-ml2
+    - neutron-linuxbridge-agent
+    - neutron-dhcp-agent
+    - neutron-metadata-agent
+
+- name: add neutron configuration file
+  template:
+    dest: /etc/neutron/neutron.conf
+    src: etc/neutron/neutron.conf.j2
+    owner: root
+    group: neutron
+    mode: 0640
+  notify:
+    - restart neutron-server service

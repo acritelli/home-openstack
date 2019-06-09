@@ -16,6 +16,7 @@
     - keystone
     - glance
     - nova
+    - neutron
 
 - hosts: compute_nodes
   roles:
