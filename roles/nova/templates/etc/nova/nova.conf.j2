@@ -3088,7 +3088,7 @@ firewall_driver = nova.virt.firewall.NoopFirewallDriver
 # https://docs.openstack.org/oslo.messaging/latest/reference/transport.html
 # (string value)
 #transport_url = rabbit://
-transport_url = rabbit://openstack:{{ rabbitmq_openstack_pw}}@{{ inventory_hostname }}
+transport_url = rabbit://openstack:{{ rabbitmq_openstack_pw }}@{{ inventory_hostname }}
 
 # The default exchange under which topics are scoped. May be overridden by an
 # exchange name specified in the transport_url option. (string value)
