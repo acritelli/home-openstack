@@ -4,6 +4,9 @@ keystone_host: controller01.os.acritelli.com
 
 memcached_host: controller01.os.acritelli.com
 
+neutron_db_pw: jimmyN3utron
+neutron_keystone_pw: n3uroticN3utron
+
 nova_host: controller01.os.acritelli.com
 nova_keystone_pw: novaR1iety
 

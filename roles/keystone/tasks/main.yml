@@ -130,3 +130,37 @@
     - public
     - internal
     - admin
+
+# Add keystone config for neutron
+- name: create neutron keystone user
+  os_user:
+    cloud: "{{ os_cloud_info }}"
+    name: neutron
+    domain: default
+    password: "{{ neutron_keystone_pw }}"
+
+- name: add admin role to neutron user and service project
+  os_user_role:
+    cloud: "{{ os_cloud_info }}"
+    user: neutron
+    project: service
+    role: admin
+
+- name: add neutron service
+  os_keystone_service:
+    cloud: "{{ os_cloud_info }}"
+    name: neutron
+    description: "Openstack Network Service"
+    service_type: network
+
+- name: add neutron service endpoints
+  os_keystone_endpoint:
+    cloud: "{{ os_cloud_info }}"
+    service: neutron
+    endpoint_interface: "{{ item }}"
+    url: "http://{{ inventory_hostname }}:9696"
+    region: RegionOne
+  with_items:
+    - public
+    - internal
+    - admin

@@ -121,3 +121,21 @@
     - nova_api
     - nova
     - nova_cell0
+
+# Create neutron user and database
+- name: create neutron user
+  mysql_user:
+    name: neutron
+    host: '%'
+    password: "{{ neutron_db_pw }}"
+    priv: 'neutron.*:ALL'
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+
+- name: create neutron databases
+  mysql_db:
+    name: "neutron"
+    state: present
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
