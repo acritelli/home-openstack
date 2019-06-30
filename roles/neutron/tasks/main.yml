@@ -18,3 +18,47 @@
     mode: 0640
   notify:
     - restart neutron-server service
+
+- name: add ml2 configuration file
+  copy:
+    dest: /etc/neutron/plugins/ml2/ml2_conf.ini
+    src: etc/neutron/plugins/ml2/ml2_conf.ini
+    owner: root
+    group: neutron
+    mode: 0644
+  notify:
+    - restart neutron-server service
+
+- name: add ml2 linuxbridge agent configuration file
+  template:
+    dest: /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+    src: etc/neutron/plugins/ml2/linuxbridge_agent.ini
+    owner: root
+    group: neutron
+    mode: 0644
+  notify:
+    - restart neutron-server service
+
+- name: set neutron sysctls
+  sysctl:
+    name: "{{ item }}"
+    state: present
+    value: 1
+  with_items:
+    - net.bridge.bridge-nf-call-iptables
+    - net.bridge.bridge-nf-call-ip6tables
+
+- name: modprobe br_netfilter
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: add DHCP agent file
+  copy:
+    dest: /etc/neutron/dhcp_agent.ini
+    src: etc/neutron/dhcp_agent.ini
+    owner: root
+    group: neutron
+    mode: 0644
+  notify:
+    - restart neutron-server service
