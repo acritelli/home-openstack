@@ -17,3 +17,4 @@ vnc_host: controller01.os.acritelli.com
 
 # TODO: these should just be host or inventory level vars
 controller_provider_interface: ens9
+compute_provider_interface: ens8

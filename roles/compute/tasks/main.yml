@@ -1,7 +1,10 @@
-- name: install nova-compute package
+- name: install necessary packages
   package:
-    name: nova-compute
+    name: "{{ item }}"
     state: present
+  with_items:
+    - nova-compute
+    - neutron-linuxbridge-agent
 
 - name: add nova configuration files
   template:
@@ -11,6 +14,29 @@
     group: nova
     mode: 0640
   notify: restart nova-compute service
+
+- name: add neutron configuration files
+  template:
+    dest: /etc/neutron/neutron.conf
+    src: etc/neutron/neutron.conf.j2
+    owner: root
+    group: neutron
+    mode: 0640
+  notify: 
+    - restart nova-compute service
+    - restart neutron-linuxbridge-agent service
+
+- name: add ml2 configuration file
+  template:
+    dest: /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+    src: etc/neutron/plugins/ml2/linuxbridge_agent.ini.j2
+    owner: root
+    group: neutron
+    mode: 0644
+  notify: 
+    - restart nova-compute service
+    - restart neutron-linuxbridge-agent service
+  
 
 - name: start and enable nova-compute service
   service:
