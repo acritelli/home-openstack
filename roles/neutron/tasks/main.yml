@@ -62,3 +62,8 @@
     mode: 0644
   notify:
     - restart neutron-server service
+
+- name: populate the keystone database
+  command: su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
+  notify:
+    - restart neutron-server service
