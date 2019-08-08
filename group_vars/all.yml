@@ -14,3 +14,6 @@ rabbit_mq_host: controller01.os.acritelli.com
 rabbitmq_openstack_pw: Th3RabbitsGeorge
 
 vnc_host: controller01.os.acritelli.com
+
+# TODO: these should just be host or inventory level vars
+controller_provider_interface: ens9

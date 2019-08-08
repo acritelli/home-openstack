@@ -7695,6 +7695,15 @@ password = {{ nova_keystone_pw }}
 
 
 [neutron]
+url = http://{{ keystone_host }}:9696
+auth_url = http://{{ keystone_host }}:5000
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = neutron
+password = {{ neutron_keystone_pw }}
 #
 # Configuration options for neutron (network connectivity as a service).
 
