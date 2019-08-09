@@ -1,0 +1,13 @@
+- name: install horizon package
+  package:
+    name: openstack-dashboard
+    state: latest
+
+- name: add horizon config file
+  template:
+    dest: /etc/openstack-dashboard/local_settings.py
+    src: etc/openstack-dashboard/local_settings.py.j2
+    owner: root
+    group: horizon
+    mode: 0640
+  notify: restart apache2

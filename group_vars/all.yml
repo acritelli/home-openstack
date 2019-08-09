@@ -3,6 +3,9 @@ glance_host: controller01.os.acritelli.com
 keystone_host: controller01.os.acritelli.com
 
 memcached_host: controller01.os.acritelli.com
+memcached_host_ip: 192.168.20.11 # TODO: this is used by horizon, there's a better way to do this (was just tired and lazy when I wrote this)
+
+horizon_host: controller01.os.acritelli.com
 
 neutron_db_pw: jimmyN3utron
 neutron_keystone_pw: n3uroticN3utron

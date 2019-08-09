@@ -17,6 +17,7 @@
     - glance
     - nova
     - neutron
+    - horizon
 
 - hosts: compute_nodes
   roles:
