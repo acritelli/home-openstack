@@ -15,6 +15,7 @@
     - etcd
     - keystone
     - glance
+    - placement
     - nova
     - neutron
     - horizon

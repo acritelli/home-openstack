@@ -1,0 +1,16 @@
+- name: install placement package
+  package:
+    name: placement-api
+    state: latest
+
+- name: add placement config file
+  template:
+    dest: /etc/placement/placement.conf
+    src: etc/placement/placement.conf.j2
+    owner: root
+    group: placement
+    mode: 0644 #TODO: this is the mode of the installed file, but not the best (there are creds in it)
+  notify: restart apache2 service
+
+- name: sync placement DB
+  command: su -s /bin/sh -c "placement-manage db sync" placement

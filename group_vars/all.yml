@@ -13,6 +13,9 @@ neutron_keystone_pw: n3uroticN3utron
 nova_host: controller01.os.acritelli.com
 nova_keystone_pw: novaR1iety
 
+placement_db_pw: 1sTh3reN0Pl@ce4me?
+placement_keystone_pw: 1JustC@n'tPlaceU
+
 rabbit_mq_host: controller01.os.acritelli.com
 rabbitmq_openstack_pw: Th3RabbitsGeorge
 

@@ -139,3 +139,21 @@
     state: present
     login_user: root
     login_unix_socket: /var/run/mysqld/mysqld.sock
+
+# Create placement user and database
+- name: create placement user
+  mysql_user:
+    name: placement
+    host: '%'
+    password: "{{ placement_db_pw }}"
+    priv: 'placement.*:ALL'
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+
+- name: create placement databases
+  mysql_db:
+    name: "placement"
+    state: present
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock

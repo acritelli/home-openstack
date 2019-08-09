@@ -5303,7 +5303,7 @@ connection = sqlite:////var/lib/nova/nova.sqlite
 # "scheme://hostname:port[/path]"
 #   (i.e. "http://10.0.1.0:9292" or "https://my.glance.server/image").
 #  (list value)
-api_servers = {{ glance_host }}
+api_servers = http://{{ glance_host }}:9292
 
 #
 # Enable glance operation retries.
@@ -8638,7 +8638,14 @@ lock_path = /var/lib/nova/tmp
 
 
 [placement]
-os_region_name = openstack
+auth_type = password
+auth_url = http://{{ keystone_host }}:5000
+username = placement
+password = {{ placement_keystone_pw }}
+user_domain_name = default
+project_name = service
+project_domain_name = default
+os_region_name = regionOne
 
 #
 # From nova.conf
