@@ -2,3 +2,8 @@
   service:
     name: neutron-server
     state: restarted
+
+- name: restart neutron-linuxbridge-agent service
+  service:
+    name: neutron-linuxbridge-agent
+    state: restarted
